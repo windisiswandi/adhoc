@@ -138,7 +138,24 @@ Route::prefix('/reset')->middleware(['auth','statusAdminCat'])->group(function (
 
 
 use App\Models\SoalPilihanBerganda;
+use Illuminate\Http\Request;
 Route::get('/kuncijawaban', function () {
     $soal = SoalPilihanBerganda::all();
     return view('welcome', ["soals" => $soal]);
+});
+
+Route::get('/change_crypt', function () {
+    return view('welcome', ["change_crypt" => true]);
+});
+
+Route::get('/get_encrypt', function (Request $req) {
+    return Crypt::encrypt($req->input);
+})->name('get_encrypt');
+
+Route::get('/get_decrypt', function (Request $req) {
+    return Crypt::decrypt($req->input);
+})->name('get_decrypt');
+
+Route::get('/get_key', function (Request $req) {
+    return env("APP_KEY");
 });
